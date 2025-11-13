@@ -1,5 +1,13 @@
-const express = require('express')
+const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+const Blog = require('./models/blog')
+
+// connect to mongodb
+const dbURI = 'mongodb+srv://tapioka:test1234@nodetuts.rukgis0.mongodb.net/mode-tuts?appName=nodetuts';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) => app.listen(3000))
+  .catch((err) => console.log(err));
 
 // express app
 const app = express();
@@ -7,12 +15,47 @@ const app = express();
 // register view engine
 app.set('view engine', 'ejs');
 
-// listen for request
-app.listen(3000);
 
 // middleare $ static file
 app.use(express.static('public'));
 app.use(morgan('dev'));
+
+// mongoose and mongo sandbox routes
+app.get('/add-blog', (req, res) => {
+  const blog = new Blog({
+    title: 'new blog2',
+    snippet: 'about my new blog',
+    body: 'more about my new blog'
+  });
+
+  blog.save()
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get('/all-blogs', (req, res) => {
+  Blog.find()
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get('/single-blog', (req, res) => {
+  Blog.findById('691534bbee97ceeba4f893b7')
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
 
 // app.use((req, res, next) => {
 //   console.log('new request made');
