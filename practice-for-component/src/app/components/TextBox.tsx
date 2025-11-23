@@ -1,8 +1,8 @@
 type TextBoxProps = {
   value: string;
-  onChange: () => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
-  placeholder?: string
+  placeholder?: string;
 }
 
 export const TextBox = ({ value, onChange, label, placeholder }: TextBoxProps) => {
@@ -11,7 +11,7 @@ export const TextBox = ({ value, onChange, label, placeholder }: TextBoxProps) =
       {label && <label className="box-label">{label}</label>}
       <input
         type="text"
-        className="textBox"
+        className="input"
         value={value}
         onChange={onChange}
         placeholder={placeholder}

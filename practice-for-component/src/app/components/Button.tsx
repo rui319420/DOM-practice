@@ -5,8 +5,11 @@ type ButtonProps = {
 
 export const Button = ({label, onClick}: ButtonProps) => {
   return (
+    <div>
+    <p>ボタン</p>
     <button className="button"onClick={onClick}>
       {label}
-    </button>
+      </button>
+    </div>
   )
 }
