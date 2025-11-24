@@ -4,13 +4,25 @@ import { Button } from "./components/Button";
 import { TextBox } from "./components/TextBox";
 
 export default function Home() {
-  // const [isClicked, setIsClicked] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("")
-  const [serverResponse, setServerResponce] = useState<string>("")
+  const [serverResponse, setServerResponse] = useState<string>("")
 
-  // const ButtonClick = () => {
-  //   setIsClicked(true);
-  // }
+  const ButtonClick = async () => {
+    try {
+      const res = await fetch('/api/echo', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: message }),
+      });
+      const data = await res.json();
+      setServerResponse(data.reply)
+    }
+    catch (error) {
+      console.log("エラーが発生しました", error);
+    }
+  };
 
   return (
     <div>
@@ -23,7 +35,6 @@ export default function Home() {
           placeholder="ここにテキストを入力"
         />
         <Button label="押す" onClick={ButtonClick} />
-        {/* {isClicked && <p className="text block">ボタンが押された</p>} */}
         {serverResponse && (
         <p className="text-block" style={{ marginTop: '20px', color: 'blue' }}>
           {serverResponse}
